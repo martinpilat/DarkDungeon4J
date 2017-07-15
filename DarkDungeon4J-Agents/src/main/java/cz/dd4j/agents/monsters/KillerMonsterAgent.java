@@ -9,8 +9,10 @@ import cz.dd4j.utils.astar.AStar;
 import cz.dd4j.utils.astar.IAStarHeuristic;
 import cz.dd4j.utils.astar.IAStarView;
 import cz.dd4j.utils.astar.Path;
+import cz.dd4j.utils.config.AutoConfig;
 import cz.dd4j.utils.config.Configurable;
 
+@AutoConfig
 public class KillerMonsterAgent extends MonsterAgentBase {
 
 	@Configurable
@@ -43,7 +45,7 @@ public class KillerMonsterAgent extends MonsterAgentBase {
 			Path<Room> path = astar.findPath(monster.atRoom, heroRoom, new IAStarView<Room>() {
 				@Override
 				public boolean isOpened(Room node) {
-					return !node.feature.isA(EFeature.TRAP);
+					return node.feature == null || !node.feature.isA(EFeature.TRAP);
 				}
 			});
 			if (path != null && path.path.size() > 1) {
