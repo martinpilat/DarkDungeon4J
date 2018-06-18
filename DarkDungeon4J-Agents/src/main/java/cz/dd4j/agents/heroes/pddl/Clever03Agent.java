@@ -9,6 +9,7 @@ import cz.dd4j.utils.config.Configurable;
 import cz.dd4j.utils.csv.CSV;
 
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by Martin on 22-Jun-17.
@@ -53,7 +54,7 @@ public class Clever03Agent extends PDDLAgentBase {
         reactiveActionTaken = true;
         List<Command> availableActions = actionsGenerator.generateFor(hero);
 
-        System.out.println("Reactive action");
+        log(Level.INFO, "Reactive action");
 
         Command selectedAction = null;
         int bestVal = Integer.MIN_VALUE;
@@ -78,7 +79,10 @@ public class Clever03Agent extends PDDLAgentBase {
 
         if (reactiveEscape && dng >= safeThreshold) {
             reactiveEscape = false;
-            currentPlan = plan(String.format("(and (alive)(has_sword)(not(monster_at %s)))", dangerousMonster.atRoom.id.name));
+            if (dangerousMonster.alive)
+                currentPlan = plan(String.format("(and (alive)(has_sword)(not(monster_at %s)))", dangerousMonster.atRoom.id.name));
+            else
+                currentPlan = plan();
             dangerousMonster = null;
             if (currentPlan != null && !currentPlan.isEmpty()) {
                 reactiveActionTaken = false;
@@ -104,7 +108,7 @@ public class Clever03Agent extends PDDLAgentBase {
                 dangerousMonster = getClosestMonster((Room) cmd.target);
             else
                 dangerousMonster = getClosestMonster(hero.atRoom);
-            System.out.println("Planned action would be: " + cmd.toString() + " dang: " + evaluateCommand(cmd));
+            log(Level.INFO, "Planned action would be: " + cmd.toString() + " dang: " + evaluateCommand(cmd));
             return getBestReactiveAction();
         }
 

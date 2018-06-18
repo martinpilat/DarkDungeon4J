@@ -23,7 +23,7 @@
     </config>
     <config>
         <key>executorClass</key>
-        <value>cz.dd4j.agents.heroes.planners.NPlanCygwinExecutor</value>
+        <value>cz.dd4j.agents.heroes.planners.LamaDockerExecutor</value>
     </config>
   </agent>
 </agents>

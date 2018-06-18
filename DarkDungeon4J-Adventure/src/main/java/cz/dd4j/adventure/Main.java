@@ -369,7 +369,7 @@ public class Main {
 		// -----------
 		// FOR TESTING
 		// -----------
-		args = getTestArgs1();		
+		//args = getTestArgs1();
 
 		// --------------
 		// IMPLEMENTATION

@@ -17,22 +17,23 @@ public class KillerMonsterAgent extends MonsterAgentBase {
 
 	@Configurable
 	private double movementProbability;
-	
+
 	@Override
 	public Command act() {
+		if (monster.atRoom == null) return null;
 		if (monster.atRoom.hero != null) return new Command(EAction.ATTACK, monster.atRoom.hero);
 
 		if (random.nextDouble() > movementProbability) {
 			return null;
 		}
-		
+
 		AStar<Room> astar = new AStar<Room>(new IAStarHeuristic<Room>() {
 			@Override
 			public int getEstimate(Room n1, Room n2) {
 				return 0;
 			}
 		});
-		
+
 		Room heroRoom = null;
 		for (Room room : dungeon.rooms.values()) {
 			if (room.hero != null) {
@@ -40,25 +41,25 @@ public class KillerMonsterAgent extends MonsterAgentBase {
 				break;
 			}
 		}
-		
+
 		if (heroRoom != null) {
 			Path<Room> path = astar.findPath(monster.atRoom, heroRoom, new IAStarView<Room>() {
 				@Override
 				public boolean isOpened(Room node) {
-					return !node.feature.isA(EFeature.TRAP);
+					return node.feature == null || !node.feature.isA(EFeature.TRAP);
 				}
 			});
 			if (path != null && path.path.size() > 1) {
 				return new Command(EAction.MOVE, path.path.get(1));
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "KillerMonsterAgent[moveProb=" + movementProbability + "]";
 	}
 
-}
+} 

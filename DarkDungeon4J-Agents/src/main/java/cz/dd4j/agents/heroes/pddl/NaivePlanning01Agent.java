@@ -7,6 +7,7 @@ import cz.dd4j.utils.config.AutoConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by Martin on 23-Jun-17.
@@ -34,6 +35,7 @@ public class NaivePlanning01Agent extends PDDLAgentBase {
         }
 
         if (stateChanged) {
+            log(Level.INFO, "State changed -> replanning");
             return true;
         }
 

@@ -404,6 +404,8 @@ public class SimStatic {
 
 		executeNonMoveActions();
 		executeMoveActions();
+
+		executeAutoActions();
 	}
 
 	// =================
@@ -546,8 +548,8 @@ public class SimStatic {
 	private Set<Room> monstersMoveTo = new HashSet<Room>();
 
 	private void resolveConflictingMoveActions() {
-		if (entityScheduledMoveActions.size() < 2)
-			return;
+//		if (entityScheduledMoveActions.size() < 2)
+//			return;
 		Collections.shuffle(entityScheduledMoveActions);
 
 		heroesMoveTo.clear();
@@ -675,6 +677,32 @@ public class SimStatic {
 		// 3. move out of corridors
 		for (Entity entity : entityScheduledMoveActions) {
 			executeAction(entity);
+		}
+	}
+
+	private void executeAutoActions() {
+		for (AgentMindBody<Hero, IHeroAgent> hero : config.state.heroes.values()) {
+
+			if (hero.body.atRoom != null && hero.body.atRoom.monster != null) {
+
+				if (hero.body.hand != null && hero.body.hand.type == EItem.SWORD) {
+					hero.body.action = new Command(EAction.ATTACK, hero.body.atRoom.monster);
+					hero.body.action.who = hero.body;
+
+					executeAction(hero.body);
+				}
+				else {
+					Monster monster = hero.body.atRoom.monster;
+
+					monster.action = new Command(EAction.ATTACK, hero.body);
+					monster.action.who = monster;
+
+					executeAction(monster);
+				}
+
+			}
+
+
 		}
 	}
 
