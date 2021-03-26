@@ -28,8 +28,7 @@ public class ExampleAdventure {
 
 		// LOAD SIM STATE
 
-		File dungeonFile = new File("./data/dungeons/dungeon-example/dungeon-01.xml");
-
+		File dungeonFile = new File("C:\\Users\\Martin\\IdeaProjects\\DarkDungeon4J\\DarkDungeon4J-Generator\\result\\adventures\\2017\\june\\full\\Adventure9079.xml");
 		SimStateLoader loader = new SimStateLoader();
 		SimState simState = loader.loadSimState(dungeonFile, true);
 
@@ -40,7 +39,8 @@ public class ExampleAdventure {
 		// WARNING: this assumes use of Eclipse of NetBeans that starts the code within the project folder itself!		
 		//File heroesFile = new File("./data/hero-agents/hero-random.xml");
 		//File heroesFile = new File("./data/hero-agents/hero-semi-random.xml");
-		File heroesFile = new File("./data/hero-agents/hero-rules-with-random-move.xml");
+		File heroesFile = new File("./data/hero-agents/clever-03-costs.xml");
+		//File heroesFile = new File("./data/hero-agents/hero-rules-with-random-move.xml");
 		//File heroesFile = new File("./data/hero-agents/nplan-cygwin.xml");
 		
 		AgentsLoader<IHeroAgent> heroesLoader = new AgentsLoader<IHeroAgent>();

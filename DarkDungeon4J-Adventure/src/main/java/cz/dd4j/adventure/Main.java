@@ -355,13 +355,13 @@ public class Main {
 	
 	public static String[] getTestArgs2() {
 		return new String[] {
-				  "-a", "../DarkDungeon4J-Generator/result/adventures/2017/june/test"  // directory with adventures
+				  "-a", "../DarkDungeon4J-Generator/result/adventures/2017/june/full"  // directory with adventures
 				, "-h", "./data/hero-agents"                                           // directory with heroes
 				, "-r", "./results"                                                    // directory with results	
 //				, "-l", "4"                                                            // limits maximum number of simulations, -1 == no limit
 //				, "-v"                                                                 // console visualization, if commented out, evaluator will not output simulation progresses
 				, "-p"                                                                 // generate zipped replay files
-				, "-t", "5"															   // timeout multiplier
+//				, "-t", "5"															   // timeout multiplier
 		};
 	}
 	
@@ -369,7 +369,7 @@ public class Main {
 		// -----------
 		// FOR TESTING
 		// -----------
-		//args = getTestArgs1();
+		args = getTestArgs2();
 
 		// --------------
 		// IMPLEMENTATION

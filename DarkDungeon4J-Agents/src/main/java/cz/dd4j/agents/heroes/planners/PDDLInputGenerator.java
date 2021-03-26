@@ -113,11 +113,12 @@ public class PDDLInputGenerator {
                                     Map<Id, Feature> features,
                                     List<Room> roomsWithSword,
                                     List<Room> goalRooms,
+                                    boolean useActionCost,
                                     File problemFile,
                                     File domainFile) {
         if (goalRooms.size() > 0) {
             String goal =  "(and (alive)(hero_at " + goalRooms.get(0).id.name + "))";
-            return generateFiles(hero, monsters, features, roomsWithSword, goal, problemFile, domainFile);
+            return generateFiles(hero, monsters, features, roomsWithSword, goal, useActionCost, problemFile, domainFile);
         } else {
             throw new RuntimeException("goalRooms.size() == 0, invalid");
         }
@@ -129,12 +130,13 @@ public class PDDLInputGenerator {
                                     Map<Id, Feature> features,
                                     List<Room> roomsWithSword,
                                     String goal,
+                                    boolean useActionCosts,
                                     File problemFile,
                                     File domainFile) {
         InputFiles inputs = new InputFiles();
         inputs.domainFile = domainFile;
 
-        inputs.problemFile = generateProblemFile(hero, monsters, features, roomsWithSword, goal, problemFile);
+        inputs.problemFile = generateProblemFile(hero, monsters, features, roomsWithSword, goal, useActionCosts, problemFile);
 
         return inputs;
     }
@@ -145,6 +147,7 @@ public class PDDLInputGenerator {
                                        Map<Id, Feature> features,
                                        List<Room> roomsWithSword,
                                        String goal,
+                                       boolean useActionCosts,
                                        File problemFile) {
         if (problemFile == null) {
             problemFile = getWorkingDir("problem.pddl");
@@ -154,7 +157,7 @@ public class PDDLInputGenerator {
         try {
             outStream = new FileOutputStream(problemFile);
             print = new PrintWriter(outStream);
-            generateProblem(hero, monsters, features, roomsWithSword, goal, print);
+            generateProblem(hero, monsters, features, roomsWithSword, goal, useActionCosts, print);
         } catch (Exception e) {
             if (print != null) {
                 try {
@@ -203,6 +206,7 @@ public class PDDLInputGenerator {
                          Map<Id, Feature> features,
                          List<Room> roomsWithSword,
                          String goal,
+                         boolean useActionCost,
                          PrintWriter print) throws IOException {
         //(define (problem p1)
         print.print(pddlStaticPartCache.toString());
@@ -256,6 +260,11 @@ public class PDDLInputGenerator {
             throw new RuntimeException("hero.atRoom is null, invalid");
         }
 
+        if (useActionCost) {
+            print.print("(= (total-cost) 0)");
+            print.print(pddlNewLine);
+        }
+
         //)
         print.print(")");
         print.print(pddlNewLine);
@@ -270,6 +279,12 @@ public class PDDLInputGenerator {
 
         print.print("");
         print.print(pddlNewLine);
+
+        if (useActionCost) {
+            print.print("(:metric minimize (total-cost))");
+            print.print("");
+            print.print(pddlNewLine);
+        }
         //)
         print.print(")");
         print.print(pddlNewLine);

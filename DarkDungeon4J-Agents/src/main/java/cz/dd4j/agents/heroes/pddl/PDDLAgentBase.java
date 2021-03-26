@@ -50,6 +50,8 @@ public class PDDLAgentBase extends HeroAgentBase {
 	@Configurable
 	protected String executorClass = "cz.dd4j.agents.heroes.planners.NPlanNativeExecutor";
 
+	@Configurable
+	protected boolean useActionCost = false;
 	// ============
 	// PDDL RUNTIME
 	// ============
@@ -374,10 +376,10 @@ public class PDDLAgentBase extends HeroAgentBase {
 		System.out.println("PLANNER GOAL:" + goal);
 		InputFiles inputs;
 		if (goal == null) { //no special goal, plan to goal rooms
-			inputs = inputGenerator.generateFiles(hero, monsters, features, roomsWithSword, goalRooms, problemFile, domainFile);
+			inputs = inputGenerator.generateFiles(hero, monsters, features, roomsWithSword, goalRooms, useActionCost, problemFile, domainFile);
 		} else {
 			customPlannerCalls++;
-			inputs = inputGenerator.generateFiles(hero, monsters, features, roomsWithSword, goal, problemFile, domainFile);
+			inputs = inputGenerator.generateFiles(hero, monsters, features, roomsWithSword, goal, useActionCost, problemFile, domainFile);
 		}
 		if (inputs.problemFile == null) {
 			throw new RuntimeException("Failed to genereate problem file!");

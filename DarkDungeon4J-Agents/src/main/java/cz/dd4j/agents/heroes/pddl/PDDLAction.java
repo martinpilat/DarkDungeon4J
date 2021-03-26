@@ -55,7 +55,7 @@ public class PDDLAction {
 		group = group.toLowerCase();
 		
 		if (group.equals("pickup_sword")) return EAction.PICKUP;
-		if (group.equals("move")) return EAction.MOVE;
+		if (group.startsWith("move")) return EAction.MOVE;
 		if (group.equals("kill")) return EAction.ATTACK;
 		if (group.equals("drop_sword")) return EAction.DROP;
 		if (group.equals("disarm")) return EAction.DISARM;
